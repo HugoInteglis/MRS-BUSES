@@ -1,0 +1,6 @@
+{
+  "name": "MRS BUSES - Renta de Buses y Transporte en Guatemala",
+  "description": "Transporte seguro y renta de buses en Guatemala para eventos, turismo, colegios y personal corporativo con más de 15 años de experiencia.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
