@@ -14,6 +14,9 @@ export const AboutSection: React.FC = () => {
                 src="https://i.ibb.co/4wW8FV5n/IMG-1853-Editada-2048x1439.webp"
                 alt="MRS BUSES Equipo y Flota"
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=1200';
+                }}
                 className="w-full max-h-[440px] object-contain rounded-2xl"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />

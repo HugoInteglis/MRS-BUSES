@@ -588,7 +588,7 @@ export const AdminQuoteGenerator: React.FC<AdminQuoteGeneratorProps> = ({
                   <img
                     src="https://i.ibb.co/r21S20yh/Logo-MRS-BUSES.png"
                     alt="MRS BUSES BY BERAKAH"
-                    crossOrigin="anonymous"
+                    referrerPolicy="no-referrer"
                     className="h-20 sm:h-24 w-auto object-contain"
                   />
                 </div>
@@ -675,7 +675,7 @@ export const AdminQuoteGenerator: React.FC<AdminQuoteGeneratorProps> = ({
                 <img
                   src="https://i.ibb.co/5gJB3J1Q/Captura-de-pantalla-2026-08-11-a-las-18-29-01.png"
                   alt="Firma Rodolfo Pérez"
-                  crossOrigin="anonymous"
+                  referrerPolicy="no-referrer"
                   className="h-16 w-auto object-contain"
                 />
 
@@ -683,7 +683,7 @@ export const AdminQuoteGenerator: React.FC<AdminQuoteGeneratorProps> = ({
                   <img
                     src="https://i.ibb.co/d4HgCSBn/Captura-de-pantalla-2026-08-11-a-las-18-28-27.png"
                     alt="Sello Oficial MRS BUSES"
-                    crossOrigin="anonymous"
+                    referrerPolicy="no-referrer"
                     className="w-24 sm:w-28 h-auto object-contain mix-blend-multiply"
                   />
                 )}

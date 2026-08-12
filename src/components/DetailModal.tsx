@@ -50,7 +50,15 @@ export const DetailModal: React.FC<DetailModalProps> = ({
 
         {/* Modal Image Header */}
         <div className="relative h-64 sm:h-72 bg-neutral-950 p-2 flex items-center justify-center shrink-0">
-          <img src={image} alt={title} referrerPolicy="no-referrer" className="w-full h-full object-contain rounded-xl" />
+          <img
+            src={image}
+            alt={title}
+            referrerPolicy="no-referrer"
+            onError={(e) => {
+              e.currentTarget.src = 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=1200';
+            }}
+            className="w-full h-full object-contain rounded-xl"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent pointer-events-none" />
 
           <div className="absolute bottom-4 left-6 right-6 text-white">

@@ -27,7 +27,7 @@ export const SERVICES_LIST: ServiceItem[] = [
       'Brindamos servicio de alquiler de transporte de personal para empresas, garantizando traslados seguros, cómodos y puntuales. Contamos con unidades adecuadas y un equipo profesional para asegurar que tu personal llegue a tiempo y con la mejor atención.',
     iconName: 'Building2',
     imageUrl:
-      'https://i.ibb.co/bjDHvH0X/PHOTO-2025-11-10-17-44-09.jpg',
+      'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=1200',
     features: [
       'Rutas corporativas optimizadas',
       'Monitoreo GPS en tiempo real',
@@ -387,9 +387,9 @@ export const FLEET_LIST: FleetItem[] = [
         'Los costos de peajes, entradas a parques o cualquier gasto ajeno a la operación de la ruta diaria estándar no están incluidos en la tarifa base y se gestionan por separado, a menos que se especifique lo contrario en el contrato.',
     },
     imageUrl:
-      'https://i.ibb.co/bjDHvH0X/PHOTO-2025-11-10-17-44-09.jpg',
+      'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=1200',
     galleryUrls: [
-      'https://i.ibb.co/bjDHvH0X/PHOTO-2025-11-10-17-44-09.jpg',
+      'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=1200',
     ],
     amenities: [
       'Capacidad 24 a 28 pasajeros',

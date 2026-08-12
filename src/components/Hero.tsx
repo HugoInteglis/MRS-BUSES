@@ -153,6 +153,9 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                     src={selectedVehicle.imageUrl}
                     alt={selectedVehicle.name}
                     referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=1200';
+                    }}
                     className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 rounded-xl"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />

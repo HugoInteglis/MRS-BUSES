@@ -135,6 +135,9 @@ export const FleetSubpage: React.FC<FleetSubpageProps> = ({
                   src={activeImage}
                   alt={vehicle.name}
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    e.currentTarget.src = 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=1200';
+                  }}
                   className="w-full max-h-[460px] object-contain transition-all duration-300 rounded-2xl"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent opacity-60 pointer-events-none" />
@@ -172,6 +175,9 @@ export const FleetSubpage: React.FC<FleetSubpageProps> = ({
                             src={imgUrl}
                             alt={`${vehicle.name} - ${index + 1}`}
                             referrerPolicy="no-referrer"
+                            onError={(e) => {
+                              e.currentTarget.src = 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=1200';
+                            }}
                             className="w-full h-full object-contain rounded-xl group-hover/thumb:scale-105 transition-transform duration-300"
                           />
                           {isSelected && (
