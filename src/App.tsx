@@ -16,11 +16,13 @@ import { FloatingChatWidget } from './components/FloatingChatWidget';
 import { DetailModal } from './components/DetailModal';
 import { AdminLoginModal } from './components/AdminLoginModal';
 import { AdminQuoteGenerator } from './components/AdminQuoteGenerator';
+import { BlogSubpage } from './components/BlogSubpage';
 
 import { FleetItem, ServiceItem } from './types';
 import { FLEET_LIST } from './data/transportData';
 
 export default function App() {
+  const [currentView, setCurrentView] = useState<'main' | 'blog'>('main');
   const [selectedFleetCategory, setSelectedFleetCategory] = useState<string>('TODOS');
   const [subpageVehicle, setSubpageVehicle] = useState<FleetItem | null>(null);
   const [prefilledBusForQuote, setPrefilledBusForQuote] = useState<string>('');
@@ -33,6 +35,17 @@ export default function App() {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
 
   const handleNavigate = (sectionId: string) => {
+    if (sectionId === 'blog') {
+      setCurrentView('blog');
+      setSubpageVehicle(null);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    if (currentView === 'blog') {
+      setCurrentView('main');
+    }
+
     // If we are currently in a subpage view and user navigates to home section, clear subpage
     if (subpageVehicle && sectionId !== 'flota') {
       setSubpageVehicle(null);
@@ -89,8 +102,14 @@ export default function App() {
         onNavigate={handleNavigate}
       />
 
-      {/* Render dedicated Subpage View if a vehicle is selected */}
-      {subpageVehicle ? (
+      {/* Render dedicated Blog view if currentView === 'blog' */}
+      {currentView === 'blog' ? (
+        <BlogSubpage
+          initialSlug="beneficios-transporte-de-personal-guatemala"
+          onNavigateHome={() => handleNavigate('inicio')}
+          onNavigateQuote={(busName) => handleQuoteVehicleFromCard(busName || '')}
+        />
+      ) : subpageVehicle ? (
         <FleetSubpage
           key={subpageVehicle.id}
           vehicle={subpageVehicle}

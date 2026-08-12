@@ -74,3 +74,42 @@ export interface QuoteFormData {
   tipoBus: BusType | '';
   mensaje: string;
 }
+
+export interface BlogPostTable {
+  headers: string[];
+  rows: string[][];
+}
+
+export interface BlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  metaTitle: string;
+  metaDescription: string;
+  keywords: string[];
+  category: string;
+  readTime: string;
+  date: string;
+  author: string;
+  imageUrl: string;
+  excerpt: string;
+  content: {
+    intro: string;
+    subtitle?: string;
+    sections: {
+      h2: string;
+      paragraphs?: string[];
+      bulletPoints?: { bold: string; text: string }[];
+      table?: BlogPostTable;
+    }[];
+    conclusionHeading?: string;
+    conclusionParagraphs?: string[];
+    ctaText?: string;
+    pollOptions?: {
+      id: string;
+      title: string;
+      badge: string;
+      description?: string;
+    }[];
+  };
+}
