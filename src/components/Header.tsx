@@ -205,14 +205,6 @@ export const Header: React.FC<HeaderProps> = ({ onSelectFleetCategory, onNavigat
             </button>
 
             <button
-              onClick={() => onNavigate('blog')}
-              className="text-slate-950 hover:text-amber-900 font-black text-sm transition-colors py-2 cursor-pointer flex items-center gap-1"
-            >
-              <span>Blog</span>
-              <span className="bg-slate-950 text-amber-400 font-black text-[10px] px-1.5 py-0.5 rounded-full uppercase">Nuevo</span>
-            </button>
-
-            <button
               onClick={() => onNavigate('cotizacion')}
               className="text-slate-950 hover:text-amber-900 font-black text-sm transition-colors py-2 cursor-pointer"
             >
@@ -313,17 +305,6 @@ export const Header: React.FC<HeaderProps> = ({ onSelectFleetCategory, onNavigat
               className="w-full text-left py-2.5 px-3 text-slate-950 hover:bg-amber-500 rounded-xl text-base font-black"
             >
               Preguntas Frecuentes
-            </button>
-
-            <button
-              onClick={() => {
-                onNavigate('blog');
-                setIsMobileMenuOpen(false);
-              }}
-              className="w-full text-left py-2.5 px-3 text-slate-950 hover:bg-amber-500 rounded-xl text-base font-black flex items-center justify-between"
-            >
-              <span>Blog y Noticias</span>
-              <span className="bg-slate-950 text-amber-400 font-extrabold text-[10px] px-2 py-0.5 rounded-full">NUEVO</span>
             </button>
 
             <button
