@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FleetItem } from '../types';
 import { WHATSAPP_RAW, WHATSAPP_NUMBER } from '../data/transportData';
 import {
@@ -35,6 +35,13 @@ export const FleetSubpage: React.FC<FleetSubpageProps> = ({
     : [vehicle.imageUrl];
 
   const [activeImage, setActiveImage] = useState<string>(galleryList[0]);
+
+  useEffect(() => {
+    const list = vehicle.galleryUrls && vehicle.galleryUrls.length > 0
+      ? vehicle.galleryUrls
+      : [vehicle.imageUrl];
+    setActiveImage(list[0]);
+  }, [vehicle.id, vehicle.imageUrl]);
 
   const handleWhatsAppQuote = () => {
     const text = [
@@ -132,6 +139,7 @@ export const FleetSubpage: React.FC<FleetSubpageProps> = ({
             <div className="space-y-4">
               <div className="relative rounded-3xl overflow-hidden border-2 border-amber-400 shadow-2xl bg-neutral-950 group min-h-[300px] sm:min-h-[440px] flex items-center justify-center p-2">
                 <img
+                  key={activeImage}
                   src={activeImage}
                   alt={vehicle.name}
                   referrerPolicy="no-referrer"

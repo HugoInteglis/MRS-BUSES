@@ -51,6 +51,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
         {/* Modal Image Header */}
         <div className="relative h-64 sm:h-72 bg-neutral-950 p-2 flex items-center justify-center shrink-0">
           <img
+            key={image}
             src={image}
             alt={title}
             referrerPolicy="no-referrer"

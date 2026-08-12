@@ -92,6 +92,7 @@ export default function App() {
       {/* Render dedicated Subpage View if a vehicle is selected */}
       {subpageVehicle ? (
         <FleetSubpage
+          key={subpageVehicle.id}
           vehicle={subpageVehicle}
           onBack={() => setSubpageVehicle(null)}
           onQuote={(busName) => {
