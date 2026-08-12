@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { QUOTE_SECTION_DATA, WHATSAPP_RAW, WHATSAPP_NUMBER } from '../data/transportData';
-import { Send, Phone, MapPin, Clock, MessageCircle, CheckCircle2, Bus, Sparkles } from 'lucide-react';
+import { Send, Phone, MapPin, Clock, MessageCircle, CheckCircle2, Bus, Sparkles, Calendar } from 'lucide-react';
 
 interface QuoteFormSectionProps {
   prefilledBusType?: string;
@@ -313,27 +313,35 @@ export const QuoteFormSection: React.FC<QuoteFormSectionProps> = ({ prefilledBus
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
-                      <label className="block text-xs font-bold text-neutral-300 uppercase tracking-wider mb-2">
-                        Fecha Salida
+                      <label className="block text-xs font-bold text-neutral-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <Calendar className="w-3.5 h-3.5 text-amber-400" />
+                        <span>Fecha Salida</span>
                       </label>
-                      <input
-                        type="date"
-                        value={formData.fechaSalida}
-                        onChange={(e) => setFormData({ ...formData, fechaSalida: e.target.value })}
-                        className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium"
-                      />
+                      <div className="relative">
+                        <input
+                          type="date"
+                          value={formData.fechaSalida}
+                          onChange={(e) => setFormData({ ...formData, fechaSalida: e.target.value })}
+                          className="w-full bg-neutral-900 border border-neutral-800 rounded-xl pl-3 pr-10 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium [color-scheme:dark]"
+                        />
+                        <Calendar className="w-4 h-4 text-amber-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                      </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-neutral-300 uppercase tracking-wider mb-2">
-                        Fecha Regreso
+                      <label className="block text-xs font-bold text-neutral-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <Calendar className="w-3.5 h-3.5 text-amber-400" />
+                        <span>Fecha Regreso</span>
                       </label>
-                      <input
-                        type="date"
-                        value={formData.fechaRegreso}
-                        onChange={(e) => setFormData({ ...formData, fechaRegreso: e.target.value })}
-                        className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium"
-                      />
+                      <div className="relative">
+                        <input
+                          type="date"
+                          value={formData.fechaRegreso}
+                          onChange={(e) => setFormData({ ...formData, fechaRegreso: e.target.value })}
+                          className="w-full bg-neutral-900 border border-neutral-800 rounded-xl pl-3 pr-10 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium [color-scheme:dark]"
+                        />
+                        <Calendar className="w-4 h-4 text-amber-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                      </div>
                     </div>
 
                     <div>
