@@ -1,4 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" width="220" height="220">
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" width="220" height="220">
   <defs>
     <!-- Curved paths for text -->
     <path id="topArc" d="M 32,110 A 78,78 0 1,1 188,110" />
@@ -49,4 +56,9 @@
       SELLO OFICIAL DE REGISTRO
     </text>
   </g>
-</svg>
+</svg>`;
+
+const publicDir = path.join(__dirname, '..', 'public');
+fs.writeFileSync(path.join(publicDir, 'sello-mrs.svg'), svgContent);
+fs.writeFileSync(path.join(publicDir, 'sello-mrs.png'), svgContent);
+console.log('Official stamp generated successfully in public/sello-mrs.svg & public/sello-mrs.png');
