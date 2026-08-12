@@ -78,52 +78,37 @@ export const AdminQuoteGenerator: React.FC<AdminQuoteGeneratorProps> = ({
 
   if (!isOpen) return null;
 
-  // Handle Download PDF via html2canvas + jsPDF with base64 image conversion
+  // Handle Download PDF via html2canvas + jsPDF with base64/local image safety
   const handleDownloadPDF = async () => {
     if (!printRef.current) return;
     setIsGeneratingPdf(true);
 
     try {
       const element = printRef.current;
+
+      // Ensure all images are fully loaded before capturing canvas
+      const images = Array.from(element.querySelectorAll('img'));
+      await Promise.all(
+        images.map(
+          (imgElement) =>
+            new Promise<void>((resolve) => {
+              const img = imgElement as HTMLImageElement;
+              if (img.complete && img.naturalWidth !== 0) {
+                resolve();
+              } else {
+                img.onload = () => resolve();
+                img.onerror = () => resolve();
+              }
+            })
+        )
+      );
+
       const canvas = await html2canvas(element, {
         scale: 2,
         useCORS: true,
-        allowTaint: true,
+        allowTaint: false,
         logging: false,
         backgroundColor: '#ffffff',
-        onclone: async (clonedDoc) => {
-          const clonedElement = clonedDoc.getElementById('quote-printable-document');
-          if (clonedElement) {
-            clonedElement.style.background = '#ffffff';
-            clonedElement.style.boxShadow = 'none';
-            clonedElement.style.border = 'none';
-            clonedElement.style.borderRadius = '0';
-
-            // Convert all img elements to Data URIs so canvas never taints
-            const images = Array.from(clonedElement.querySelectorAll('img'));
-            await Promise.all(
-              images.map(async (img) => {
-                if (img.src && !img.src.startsWith('data:')) {
-                  try {
-                    const res = await fetch(img.src, { mode: 'cors' });
-                    const blob = await res.blob();
-                    await new Promise<void>((resolve) => {
-                      const reader = new FileReader();
-                      reader.onloadend = () => {
-                        img.src = reader.result as string;
-                        resolve();
-                      };
-                      reader.onerror = () => resolve();
-                      reader.readAsDataURL(blob);
-                    });
-                  } catch (e) {
-                    console.warn('Could not convert image to base64 for PDF:', e);
-                  }
-                }
-              })
-            );
-          }
-        },
       });
 
       const imgData = canvas.toDataURL('image/png');
@@ -133,21 +118,33 @@ export const AdminQuoteGenerator: React.FC<AdminQuoteGeneratorProps> = ({
         format: 'a4',
       });
 
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
+      const pdfWidth = pdf.internal.pageSize.getWidth(); // 210mm
+      const pdfHeight = pdf.internal.pageSize.getHeight(); // 297mm
 
       const margin = 8;
-      const printableWidth = pdfWidth - margin * 2;
+      const printableWidth = pdfWidth - margin * 2; // 194mm
+      const maxAvailableHeight = pdfHeight - margin * 2; // 281mm
+
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
       const ratio = printableWidth / imgWidth;
-      const renderWidth = printableWidth;
-      const renderHeight = imgHeight * ratio;
+
+      let renderWidth = printableWidth;
+      let renderHeight = imgHeight * ratio;
+
+      // If document height exceeds single page height, scale down so it fits on EXACTLY 1 PAGE
+      if (renderHeight > maxAvailableHeight) {
+        const scaleFactor = maxAvailableHeight / renderHeight;
+        renderHeight = maxAvailableHeight;
+        renderWidth = renderWidth * scaleFactor;
+      }
+
+      const xPos = margin + (printableWidth - renderWidth) / 2;
 
       pdf.addImage(
         imgData,
         'PNG',
-        margin,
+        xPos,
         margin,
         renderWidth,
         renderHeight
@@ -157,7 +154,8 @@ export const AdminQuoteGenerator: React.FC<AdminQuoteGeneratorProps> = ({
       pdf.save(filename);
     } catch (err) {
       console.error('Error generando PDF:', err);
-      alert('Hubo un error al generar el PDF. Por favor reintenta o utiliza la opción Imprimir.');
+      // Fallback: trigger print dialog if html2canvas fails
+      window.print();
     } finally {
       setIsGeneratingPdf(false);
     }
@@ -233,44 +231,52 @@ export const AdminQuoteGenerator: React.FC<AdminQuoteGeneratorProps> = ({
         @media print {
           @page {
             size: A4 portrait;
-            margin: 5mm;
+            margin: 0;
           }
 
-          /* Hide full page landing, headers, footers and control bars */
-          header, footer, main, .print\:hidden {
+          /* Hide absolutely everything in body except the active admin quote modal */
+          body > *:not(.admin-quote-modal-root) {
             display: none !important;
           }
 
-          html, body {
+          /* Ensure modal root fills page cleanly */
+          .admin-quote-modal-root {
+            position: absolute !important;
+            inset: 0 !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
             background: #ffffff !important;
             color: #000000 !important;
-            height: auto !important;
-            min-height: 0 !important;
-            overflow: visible !important;
-            margin: 0 !important;
             padding: 0 !important;
+            margin: 0 !important;
+            overflow: hidden !important;
+            display: block !important;
           }
 
-          .admin-quote-modal-root {
-            position: static !important;
-            inset: auto !important;
-            background: #ffffff !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            overflow: visible !important;
-            display: block !important;
-            height: auto !important;
-            min-height: 0 !important;
+          /* Hide header bar, form editor, mobile switcher */
+          .print\:hidden {
+            display: none !important;
+          }
+
+          /* Hide left form column */
+          .admin-quote-modal-root .border-r {
+            display: none !important;
           }
 
           .quote-preview-container {
             display: block !important;
+            position: absolute !important;
+            inset: 0 !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
             padding: 0 !important;
             margin: 0 !important;
             background: #ffffff !important;
-            overflow: visible !important;
-            height: auto !important;
-            min-height: 0 !important;
+            overflow: hidden !important;
           }
 
           #quote-printable-document {
@@ -278,15 +284,33 @@ export const AdminQuoteGenerator: React.FC<AdminQuoteGeneratorProps> = ({
             top: 0 !important;
             left: 0 !important;
             width: 100% !important;
-            max-width: 100% !important;
+            max-width: 210mm !important;
+            height: auto !important;
+            max-height: 297mm !important;
             margin: 0 auto !important;
-            padding: 15px !important;
+            padding: 10mm 12mm !important;
             box-shadow: none !important;
             border: none !important;
             background: #ffffff !important;
             color: #000000 !important;
             border-radius: 0 !important;
+            page-break-before: avoid !important;
+            page-break-after: avoid !important;
             page-break-inside: avoid !important;
+            break-inside: avoid !important;
+            box-sizing: border-box !important;
+          }
+
+          html, body {
+            background: #ffffff !important;
+            color: #000000 !important;
+            height: 100% !important;
+            max-height: 100% !important;
+            overflow: hidden !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
           }
         }
       `}</style>
@@ -650,84 +674,87 @@ export const AdminQuoteGenerator: React.FC<AdminQuoteGeneratorProps> = ({
             <div
               id="quote-printable-document"
               ref={printRef}
-              className="w-full bg-white text-slate-900 shadow-2xl rounded-2xl p-4 sm:p-10 border border-slate-200 space-y-6 sm:space-y-8 font-sans leading-relaxed relative text-xs sm:text-sm print:shadow-none print:border-none print:rounded-none print:p-6"
+              className="w-full bg-white text-slate-900 shadow-2xl rounded-2xl p-4 sm:p-10 border border-slate-200 space-y-6 sm:space-y-8 font-sans leading-relaxed relative text-xs sm:text-sm print:shadow-none print:border-none print:rounded-none print:p-0 print:space-y-3.5 print:text-xs"
             >
             {/* Watermark / Background Accent */}
             <div className="absolute top-0 right-0 w-48 h-48 bg-amber-400/5 rounded-bl-full pointer-events-none print:hidden"></div>
 
             {/* Document Header */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border-b-2 border-slate-900/10 pb-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border-b-2 border-slate-900/10 pb-6 print:pb-3 print:gap-3 print:flex-row">
               <div className="flex items-center gap-4">
                 {/* Official Logo */}
                 <div className="flex items-center">
                   <img
-                    src="https://i.ibb.co/r21S20yh/Logo-MRS-BUSES.png"
+                    src="/logo-mrs.png"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = "https://i.ibb.co/r21S20yh/Logo-MRS-BUSES.png";
+                    }}
                     alt="MRS BUSES BY BERAKAH"
-                    referrerPolicy="no-referrer"
-                    className="h-20 sm:h-24 w-auto object-contain"
+                    crossOrigin="anonymous"
+                    className="h-20 sm:h-24 print:h-16 w-auto object-contain"
                   />
                 </div>
 
                 <div className="pl-3 border-l-2 border-amber-400">
-                  <h1 className="text-2xl sm:text-3xl font-black text-indigo-950 italic tracking-tight font-serif">
+                  <h1 className="text-2xl sm:text-3xl print:text-xl font-black text-indigo-950 italic tracking-tight font-serif">
                     Transporte y Buses Berakah
                   </h1>
-                  <span className="text-xs text-slate-600 font-bold block">
+                  <span className="text-xs print:text-[10px] text-slate-600 font-bold block">
                     Servicios Integrales de Alquiler de Transporte en Guatemala
                   </span>
                 </div>
               </div>
 
               {/* Document Metadata Box */}
-              <div className="text-right sm:self-center bg-slate-50 p-3 rounded-xl border border-slate-200">
-                <span className="block font-black text-amber-600 text-xs uppercase tracking-widest">COTIZACIÓN OFICIAL</span>
-                <span className="block text-slate-950 font-black text-base">{quoteData.quoteNumber}</span>
-                <span className="block text-[11px] text-slate-500 font-medium">{quoteData.issueDate}</span>
+              <div className="text-right sm:self-center bg-slate-50 p-3 print:p-2 rounded-xl border border-slate-200">
+                <span className="block font-black text-amber-600 text-xs print:text-[10px] uppercase tracking-widest">COTIZACIÓN OFICIAL</span>
+                <span className="block text-slate-950 font-black text-base print:text-sm">{quoteData.quoteNumber}</span>
+                <span className="block text-[11px] print:text-[10px] text-slate-500 font-medium">{quoteData.issueDate}</span>
               </div>
             </div>
 
             {/* Greeting */}
-            <div className="space-y-3">
-              <div className="font-bold text-slate-900 text-base">
+            <div className="space-y-3 print:space-y-1">
+              <div className="font-bold text-slate-900 text-base print:text-sm">
                 {quoteData.clientName}
               </div>
-              <p className="text-slate-700 leading-relaxed text-sm">
+              <p className="text-slate-700 leading-relaxed text-sm print:text-xs">
                 Es un gusto poder saludarlos. Le presentamos la propuesta para su viaje:
               </p>
             </div>
 
             {/* Proposal Details Box / Structured Narrative */}
-            <div className="bg-slate-50/80 border border-slate-200 rounded-xl p-5 sm:p-6 space-y-4">
+            <div className="bg-slate-50/80 border border-slate-200 rounded-xl p-5 sm:p-6 print:p-3 space-y-4 print:space-y-2">
               <div className="flex items-start gap-3">
                 <div className="p-2 bg-amber-100 text-amber-800 rounded-lg shrink-0 mt-0.5 print:hidden">
                   <Bus className="w-5 h-5" />
                 </div>
-                <div className="text-slate-800 leading-relaxed text-sm">
+                <div className="text-slate-800 leading-relaxed text-sm print:text-xs">
                   Servicio de transporte para <strong className="text-slate-950 font-black bg-amber-100/60 px-1 py-0.5 rounded">{quoteData.passengerCount}</strong> en <strong className="text-slate-950 font-black bg-amber-100/60 px-1 py-0.5 rounded">{quoteData.vehicleUnits}</strong> con la siguiente logística: saliendo el <strong className="text-slate-950 font-black">{quoteData.departureDate}</strong> saliendo de <strong className="text-slate-950 font-black">{quoteData.originLocation}</strong> a las <strong className="text-slate-950 font-black">{quoteData.departureTime}</strong>, aprox. hacia <strong className="text-slate-950 font-black">{quoteData.destinationLocation}</strong> retornando el mismo día aproximadamente a las <strong className="text-slate-950 font-black">{quoteData.returnTime}</strong>, al mismo lugar de inicio. <span className="font-extrabold text-slate-900">{quoteData.serviceType}.</span>
                 </div>
               </div>
 
               {/* Inclusions Row */}
-              <div className="pt-3 border-t border-slate-200 flex items-start gap-2 text-xs text-slate-800">
+              <div className="pt-3 print:pt-1 border-t border-slate-200 flex items-start gap-2 text-xs print:text-[11px] text-slate-800">
                 <span className="font-black text-slate-950 shrink-0">El servicio de transporte incluye:</span>
                 <span className="font-bold text-slate-700">{quoteData.customInclusionsText}</span>
               </div>
             </div>
 
             {/* Highlighted Price Box (Matches exact box in sample image) */}
-            <div className="py-2 flex justify-center">
-              <div className="border-2 border-slate-900 bg-white px-10 py-5 rounded-xl text-center shadow-md min-w-[260px]">
-                <div className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">
+            <div className="py-2 print:py-1 flex justify-center">
+              <div className="border-2 border-slate-900 bg-white px-10 py-5 print:px-8 print:py-3 rounded-xl text-center shadow-md min-w-[260px]">
+                <div className="text-2xl sm:text-3xl print:text-xl font-black text-slate-950 tracking-tight">
                   {quoteData.currencySymbol} {quoteData.priceAmount}
                 </div>
-                <div className="text-xs font-bold text-slate-600 lowercase tracking-wider mt-0.5">
+                <div className="text-xs print:text-[10px] font-bold text-slate-600 lowercase tracking-wider mt-0.5">
                   {quoteData.vatTaxLabel}
                 </div>
               </div>
             </div>
 
             {/* Terms & Conditions Notes */}
-            <div className="space-y-2 text-xs text-slate-700 bg-amber-50/50 p-4 rounded-xl border border-amber-200/60">
+            <div className="space-y-2 print:space-y-1 text-xs print:text-[11px] text-slate-700 bg-amber-50/50 p-4 print:p-2.5 rounded-xl border border-amber-200/60">
               <p>
                 <strong className="text-slate-950 font-black">Nota:</strong> {quoteData.availabilityNote}
               </p>
@@ -737,45 +764,51 @@ export const AdminQuoteGenerator: React.FC<AdminQuoteGeneratorProps> = ({
             </div>
 
             {/* Closing text */}
-            <div className="text-xs text-slate-800 font-medium">
+            <div className="text-xs print:text-[11px] text-slate-800 font-medium">
               {quoteData.closingText}
             </div>
 
             {/* Sign-off & Official Stamp */}
-            <div className="pt-6 border-t border-slate-200">
-              <div className="text-xs font-bold text-slate-600 mb-2">Atentamente,</div>
+            <div className="pt-6 print:pt-3 border-t border-slate-200">
+              <div className="text-xs print:text-[11px] font-bold text-slate-600 mb-1">Atentamente,</div>
               
               {/* Signature and Stamp side by side */}
-              <div className="flex items-end gap-3 my-2">
+              <div className="flex items-end gap-3 my-1">
                 <img
-                  src="https://i.ibb.co/5gJB3J1Q/Captura-de-pantalla-2026-08-11-a-las-18-29-01.png"
+                  src="/firma-rodolfo.png"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "https://i.ibb.co/5gJB3J1Q/Captura-de-pantalla-2026-08-11-a-las-18-29-01.png";
+                  }}
                   alt="Firma Rodolfo Pérez"
-                  referrerPolicy="no-referrer"
-                  className="h-16 w-auto object-contain"
+                  crossOrigin="anonymous"
+                  className="h-16 print:h-12 w-auto object-contain"
                 />
 
                 {quoteData.showStamp && (
                   <img
-                    src="https://i.ibb.co/d4HgCSBn/Captura-de-pantalla-2026-08-11-a-las-18-28-27.png"
+                    src="/sello-mrs.png"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = "https://i.ibb.co/d4HgCSBn/Captura-de-pantalla-2026-08-11-a-las-18-28-27.png";
+                    }}
                     alt="Sello Oficial MRS BUSES"
-                    referrerPolicy="no-referrer"
-                    className="w-24 sm:w-28 h-auto object-contain mix-blend-multiply"
+                    crossOrigin="anonymous"
+                    className="w-24 sm:w-28 print:w-20 h-auto object-contain mix-blend-multiply"
                   />
                 )}
               </div>
 
               {/* Adviser details */}
               <div className="space-y-0.5">
-                <div className="font-black text-slate-950 text-base">{quoteData.advisorName}</div>
-                <div className="text-xs font-bold text-amber-700">{quoteData.advisorRole}</div>
-                <div className="text-xs text-slate-600 font-semibold">
+                <div className="font-black text-slate-950 text-base print:text-sm">{quoteData.advisorName}</div>
+                <div className="text-xs print:text-[10px] font-bold text-amber-700">{quoteData.advisorRole}</div>
+                <div className="text-xs print:text-[10px] text-slate-600 font-semibold">
                   Celular: {quoteData.advisorPhone}
                 </div>
               </div>
             </div>
 
             {/* Document Footer */}
-            <div className="pt-8 border-t border-slate-200 flex items-center justify-between text-[11px] text-slate-500 font-medium">
+            <div className="pt-6 print:pt-2 border-t border-slate-200 flex items-center justify-between text-[11px] print:text-[10px] text-slate-500 font-medium">
               <div>1</div>
               <div className="font-bold text-slate-700">
                 www.mrsbuses.com &nbsp;|&nbsp; teléfonos de contactos 4961-6621 / 3748-1106

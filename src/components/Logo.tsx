@@ -17,7 +17,10 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md' }) => {
   return (
     <div className="flex items-center select-none group">
       <img
-        src="https://i.ibb.co/r21S20yh/Logo-MRS-BUSES.png"
+        src="/logo-mrs.png"
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = "https://i.ibb.co/r21S20yh/Logo-MRS-BUSES.png";
+        }}
         alt="MRS BUSES BY BERAKAH - Logo Oficial"
         referrerPolicy="no-referrer"
         className={`${heightClass} w-auto object-contain transition-transform duration-200 group-hover:scale-105 filter drop-shadow-md py-1`}
