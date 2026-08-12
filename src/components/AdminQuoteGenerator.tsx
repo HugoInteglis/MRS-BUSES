@@ -78,7 +78,7 @@ export const AdminQuoteGenerator: React.FC<AdminQuoteGeneratorProps> = ({
 
   if (!isOpen) return null;
 
-  // Handle Download PDF via html2canvas + jsPDF
+  // Handle Download PDF via html2canvas + jsPDF with base64 image conversion
   const handleDownloadPDF = async () => {
     if (!printRef.current) return;
     setIsGeneratingPdf(true);
@@ -88,11 +88,45 @@ export const AdminQuoteGenerator: React.FC<AdminQuoteGeneratorProps> = ({
       const canvas = await html2canvas(element, {
         scale: 2,
         useCORS: true,
+        allowTaint: true,
         logging: false,
         backgroundColor: '#ffffff',
+        onclone: async (clonedDoc) => {
+          const clonedElement = clonedDoc.getElementById('quote-printable-document');
+          if (clonedElement) {
+            clonedElement.style.background = '#ffffff';
+            clonedElement.style.boxShadow = 'none';
+            clonedElement.style.border = 'none';
+            clonedElement.style.borderRadius = '0';
+
+            // Convert all img elements to Data URIs so canvas never taints
+            const images = Array.from(clonedElement.querySelectorAll('img'));
+            await Promise.all(
+              images.map(async (img) => {
+                if (img.src && !img.src.startsWith('data:')) {
+                  try {
+                    const res = await fetch(img.src, { mode: 'cors' });
+                    const blob = await res.blob();
+                    await new Promise<void>((resolve) => {
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        img.src = reader.result as string;
+                        resolve();
+                      };
+                      reader.onerror = () => resolve();
+                      reader.readAsDataURL(blob);
+                    });
+                  } catch (e) {
+                    console.warn('Could not convert image to base64 for PDF:', e);
+                  }
+                }
+              })
+            );
+          }
+        },
       });
 
-      const imgData = canvas.toDataURL('image/jpeg', 0.98);
+      const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
@@ -103,25 +137,27 @@ export const AdminQuoteGenerator: React.FC<AdminQuoteGeneratorProps> = ({
       const pdfHeight = pdf.internal.pageSize.getHeight();
       const imgWidth = canvas.width;
       const imgHeight = canvas.height;
-      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
 
-      const imgX = (pdfWidth - imgWidth * ratio) / 2;
-      const imgY = 5;
+      const margin = 8;
+      const printableWidth = pdfWidth - margin * 2;
+      const ratio = printableWidth / imgWidth;
+      const renderWidth = printableWidth;
+      const renderHeight = imgHeight * ratio;
 
       pdf.addImage(
         imgData,
-        'JPEG',
-        imgX,
-        imgY,
-        imgWidth * ratio,
-        imgHeight * ratio
+        'PNG',
+        margin,
+        margin,
+        renderWidth,
+        renderHeight
       );
 
       const filename = `Cotizacion_MRS_Buses_${quoteData.quoteNumber}.pdf`;
       pdf.save(filename);
     } catch (err) {
       console.error('Error generando PDF:', err);
-      alert('Hubo un error al generar el PDF. Puedes intentar usar la opción de "Imprimir / Guardar PDF".');
+      alert('Hubo un error al generar el PDF. Por favor reintenta o utiliza la opción Imprimir.');
     } finally {
       setIsGeneratingPdf(false);
     }
@@ -191,27 +227,66 @@ export const AdminQuoteGenerator: React.FC<AdminQuoteGeneratorProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-neutral-950/90 backdrop-blur-md overflow-hidden animate-fade-in print:bg-white print:p-0 print:overflow-visible">
+    <div className="admin-quote-modal-root fixed inset-0 z-50 flex flex-col bg-neutral-950/90 backdrop-blur-md overflow-hidden animate-fade-in print:bg-white print:p-0 print:overflow-visible">
       {/* Printable CSS overrides */}
       <style>{`
         @media print {
-          body * {
-            visibility: hidden;
+          @page {
+            size: A4 portrait;
+            margin: 5mm;
           }
-          #quote-printable-document, #quote-printable-document * {
-            visibility: visible;
+
+          /* Hide full page landing, headers, footers and control bars */
+          header, footer, main, .print\:hidden {
+            display: none !important;
           }
+
+          html, body {
+            background: #ffffff !important;
+            color: #000000 !important;
+            height: auto !important;
+            min-height: 0 !important;
+            overflow: visible !important;
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+
+          .admin-quote-modal-root {
+            position: static !important;
+            inset: auto !important;
+            background: #ffffff !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            overflow: visible !important;
+            display: block !important;
+            height: auto !important;
+            min-height: 0 !important;
+          }
+
+          .quote-preview-container {
+            display: block !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            background: #ffffff !important;
+            overflow: visible !important;
+            height: auto !important;
+            min-height: 0 !important;
+          }
+
           #quote-printable-document {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            margin: 0;
-            padding: 20px !important;
+            position: relative !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 auto !important;
+            padding: 15px !important;
             box-shadow: none !important;
             border: none !important;
-            background: white !important;
-            color: black !important;
+            background: #ffffff !important;
+            color: #000000 !important;
+            border-radius: 0 !important;
+            page-break-inside: avoid !important;
           }
         }
       `}</style>
@@ -558,7 +633,7 @@ export const AdminQuoteGenerator: React.FC<AdminQuoteGeneratorProps> = ({
         </div>
 
         {/* Right Side: High-Resolution Printable Document Canvas */}
-        <div className={`lg:col-span-7 bg-neutral-900/60 overflow-y-auto p-3 sm:p-8 flex flex-col items-center justify-start print:p-0 print:bg-white print:overflow-visible ${
+        <div className={`quote-preview-container lg:col-span-7 bg-neutral-900/60 overflow-y-auto p-3 sm:p-8 flex flex-col items-center justify-start print:p-0 print:bg-white print:overflow-visible ${
           activeMobileTab === 'preview' ? 'block' : 'hidden lg:block'
         }`}>
           
