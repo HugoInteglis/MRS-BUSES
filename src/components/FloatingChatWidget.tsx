@@ -91,6 +91,28 @@ export const FloatingChatWidget: React.FC = () => {
                 </button>
               ))}
             </div>
+            {/* Social icons row */}
+            <div className="pt-1 flex items-center justify-between border-t border-neutral-900">
+              <span className="text-[10px] text-neutral-400 font-bold">Síguenos:</span>
+              <div className="flex items-center gap-1.5">
+                <a
+                  href="https://www.tiktok.com/@berakahtransporte?_r=1&_t=ZS-98q69DFSBLY"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 bg-black px-2 py-1 rounded-lg border border-neutral-700 hover:border-[#FE2C55] text-[10px] font-bold text-white transition-all hover:scale-105"
+                >
+                  <span className="text-[#25F4EE]">TikTok</span>
+                </a>
+                <a
+                  href="https://www.facebook.com/BusesBerakah?mibextid=wwXIfr&rdid=BMDZn0r6OGXUXaJY&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F198LJP2DaB%2F%3Fmibextid%3DwwXIfr#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 bg-[#1877F2] px-2 py-1 rounded-lg text-[10px] font-bold text-white transition-all hover:scale-105"
+                >
+                  <span>Facebook</span>
+                </a>
+              </div>
+            </div>
           </div>
 
           {/* Footer Input */}

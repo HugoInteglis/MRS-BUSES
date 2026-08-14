@@ -4,6 +4,9 @@ export const WHATSAPP_NUMBER = '+502 4961-6621';
 export const WHATSAPP_RAW = '50249616621';
 export const COMPANY_NAME = 'MRS BUSES';
 
+export const TIKTOK_URL = 'https://www.tiktok.com/@berakahtransporte?_r=1&_t=ZS-98q69DFSBLY';
+export const FACEBOOK_URL = 'https://www.facebook.com/BusesBerakah?mibextid=wwXIfr&rdid=BMDZn0r6OGXUXaJY&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F198LJP2DaB%2F%3Fmibextid%3DwwXIfr#';
+
 export const HERO_DATA = {
   antetitulo: 'Tu aliado en transporte corporativo y de viajes en Guatemala',
   titulo: 'Transporte seguro y renta de buses para cualquier ocasión en Guatemala',
@@ -27,7 +30,7 @@ export const SERVICES_LIST: ServiceItem[] = [
       'Brindamos servicio de alquiler de transporte de personal para empresas, garantizando traslados seguros, cómodos y puntuales. Contamos con unidades adecuadas y un equipo profesional para asegurar que tu personal llegue a tiempo y con la mejor atención.',
     iconName: 'Building2',
     imageUrl:
-      'https://i.ibb.co/G3tC5cms/PHOTO-2024-08-05-17-49-07-2.jpg',
+      'https://i.ibb.co/8LXg9PFG/Whats-App-Image-2026-08-12-at-16-11-04.jpg',
     features: [
       'Rutas corporativas optimizadas',
       'Monitoreo GPS en tiempo real',
@@ -57,7 +60,7 @@ export const SERVICES_LIST: ServiceItem[] = [
       'Proporcionamos servicio de alquiler de bus escolar para colegios e instituciones, garantizando traslados seguros, cómodos y puntuales. Contamos con unidades equipadas y conductores responsables para asegurar que los estudiantes viajen con confianza y lleguen siempre a tiempo.',
     iconName: 'GraduationCap',
     imageUrl:
-      'https://i.ibb.co/zTz9TPYp/PHOTO-2025-01-07-17-33-33.jpg',
+      'https://i.ibb.co/DHjHvDT1/Whats-App-Image-2026-08-12-at-16-10-12.jpg',
     features: [
       'Unidades amarillas reglamentarias y certificadas',
       'Cinturones de seguridad en todos los asientos',
@@ -205,12 +208,12 @@ export const FLEET_LIST: FleetItem[] = [
         'Los costos de peajes, entradas a parques, o cualquier gasto ajeno a la operación de la ruta estándar no están incluidos en la tarifa base y se gestionan por separado, a menos que se especifique lo contrario en el contrato.',
     },
     imageUrl:
-      'https://i.ibb.co/zTz9TPYp/PHOTO-2025-01-07-17-33-33.jpg',
+      'https://i.ibb.co/DHjHvDT1/Whats-App-Image-2026-08-12-at-16-10-12.jpg',
     galleryUrls: [
-      'https://i.ibb.co/zTz9TPYp/PHOTO-2025-01-07-17-33-33.jpg',
-      'https://i.ibb.co/67rf9r8D/PHOTO-2024-08-06-18-47-41.jpg',
-      'https://i.ibb.co/N24FV7dh/PHOTO-2024-08-06-18-47-42-2.jpg',
-      'https://i.ibb.co/3YhKgV6w/PHOTO-2024-08-06-18-47-42.jpg',
+      'https://i.ibb.co/DHjHvDT1/Whats-App-Image-2026-08-12-at-16-10-12.jpg',
+      'https://i.ibb.co/LD7zmb2s/Whats-App-Image-2026-08-12-at-16-10-25-1.jpg',
+      'https://i.ibb.co/tTsgKNQM/Whats-App-Image-2026-08-12-at-16-10-25-2.jpg',
+      'https://i.ibb.co/nNr7C990/Whats-App-Image-2026-08-12-at-16-10-25.jpg',
     ],
     amenities: [
       'Capacidad 44-48 pax',
@@ -251,10 +254,12 @@ export const FLEET_LIST: FleetItem[] = [
         'Los costos de peajes, entradas a parques o cualquier gasto ajeno a la operación de la ruta estándar no están incluidos en la tarifa base y se gestionan por separado, a menos que se especifique lo contrario en el contrato.',
     },
     imageUrl:
-      'https://i.ibb.co/G3tC5cms/PHOTO-2024-08-05-17-49-07-2.jpg',
+      'https://i.ibb.co/8LXg9PFG/Whats-App-Image-2026-08-12-at-16-11-04.jpg',
     galleryUrls: [
-      'https://i.ibb.co/G3tC5cms/PHOTO-2024-08-05-17-49-07-2.jpg',
-      'https://i.ibb.co/1Y49XkH9/PHOTO-2024-08-05-17-49-07.jpg',
+      'https://i.ibb.co/8LXg9PFG/Whats-App-Image-2026-08-12-at-16-11-04.jpg',
+      'https://i.ibb.co/hJY5CRdq/Whats-App-Image-2026-08-12-at-16-11-03.jpg',
+      'https://i.ibb.co/R46Ptg1R/Whats-App-Image-2026-08-12-at-16-11-03-2.jpg',
+      'https://i.ibb.co/x8fMzTXZ/Whats-App-Image-2026-08-12-at-16-11-03-1.jpg',
     ],
     amenities: [
       'Capacidad 24 a 28 pasajeros',
@@ -295,8 +300,9 @@ export const FLEET_LIST: FleetItem[] = [
         'Los costos de peajes, entradas a parques o cualquier gasto ajeno a la operación de la ruta estándar no están incluidos en la tarifa base y se gestionan por separado, a menos que se especifique lo contrario en el contrato.',
     },
     imageUrl:
-      'https://i.ibb.co/b548yX82/PHOTO-2025-09-25-18-24-02-2.jpg',
+      'https://i.ibb.co/20StnKg2/Whats-App-Image-2026-08-12-at-16-10-25-3.jpg',
     galleryUrls: [
+      'https://i.ibb.co/20StnKg2/Whats-App-Image-2026-08-12-at-16-10-25-3.jpg',
       'https://i.ibb.co/b548yX82/PHOTO-2025-09-25-18-24-02-2.jpg',
       'https://i.ibb.co/tPbn0cLk/PHOTO-2025-09-25-18-24-02.jpg',
       'https://i.ibb.co/5W0n00jQ/PHOTO-2025-11-10-17-38-28.jpg',

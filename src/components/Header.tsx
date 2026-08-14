@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MessageCircle, ChevronDown, Menu, X, ShieldCheck, Clock, Phone, Bus } from 'lucide-react';
 import { WHATSAPP_NUMBER, WHATSAPP_RAW } from '../data/transportData';
 import { Logo } from './Logo';
+import { SocialLinks } from './SocialLinks';
 
 interface HeaderProps {
   onSelectFleetCategory: (category: string) => void;
@@ -95,8 +96,10 @@ export const Header: React.FC<HeaderProps> = ({ onSelectFleetCategory, onNavigat
             </div>
           </div>
 
-          {/* Quick Contact Action Buttons */}
+          {/* Quick Contact Action Buttons & Social Icons */}
           <div className="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
+            <SocialLinks variant="header" />
+
             <a
               href={`https://api.whatsapp.com/send?phone=${WHATSAPP_RAW}&text=${encodeURIComponent('Hola MRS BUSES, deseo cotizar un servicio de alquiler de transporte.')}`}
               target="_blank"
@@ -317,7 +320,7 @@ export const Header: React.FC<HeaderProps> = ({ onSelectFleetCategory, onNavigat
               Contacto
             </button>
 
-            <div className="pt-2">
+            <div className="pt-2 space-y-2">
               <a
                 href={`https://wa.me/${WHATSAPP_RAW}?text=Hola%20MRS%20BUSES,%20deseo%20solicitar%20informaci%C3%B3n%20y%20cotizaci%C3%B3n.`}
                 target="_blank"
@@ -327,6 +330,13 @@ export const Header: React.FC<HeaderProps> = ({ onSelectFleetCategory, onNavigat
                 <span>💬</span>
                 <span>Contactar WhatsApp: {WHATSAPP_NUMBER}</span>
               </a>
+
+              <div className="pt-2 border-t border-amber-500/60">
+                <span className="block text-[11px] font-black text-slate-950 uppercase tracking-wider mb-2 text-center">
+                  Síguenos en Redes Sociales:
+                </span>
+                <SocialLinks variant="footer" className="justify-center" />
+              </div>
             </div>
           </div>
         )}

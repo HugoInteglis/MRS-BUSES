@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { QUOTE_SECTION_DATA, WHATSAPP_RAW, WHATSAPP_NUMBER } from '../data/transportData';
 import { Send, Phone, MapPin, Clock, MessageCircle, CheckCircle2, Bus, Sparkles, Calendar } from 'lucide-react';
+import { SocialLinks } from './SocialLinks';
 
 interface QuoteFormSectionProps {
   prefilledBusType?: string;
@@ -147,6 +148,14 @@ export const QuoteFormSection: React.FC<QuoteFormSectionProps> = ({ prefilledBus
                       <div className="text-sm font-bold text-white">Lunes a Domingo: 24 Horas</div>
                     </div>
                   </div>
+                </div>
+
+                {/* Social Networks Cards */}
+                <div className="pt-4 border-t border-neutral-800/80 space-y-2.5">
+                  <span className="text-xs font-black uppercase text-amber-400 tracking-wider block">
+                    Conéctate en Redes Sociales:
+                  </span>
+                  <SocialLinks variant="contact-card" />
                 </div>
               </div>
             </div>

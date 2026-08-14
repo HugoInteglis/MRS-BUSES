@@ -3,6 +3,7 @@ import { COMPANY_NAME, WHATSAPP_NUMBER, WHATSAPP_RAW } from '../data/transportDa
 import { Logo } from './Logo';
 import { MessageCircle, Phone, MapPin, ShieldCheck, Lock } from 'lucide-react';
 import { VisaLogo, MastercardLogo } from './PaymentLogos';
+import { SocialLinks } from './SocialLinks';
 
 interface FooterProps {
   onNavigate: (sectionId: string) => void;
@@ -37,6 +38,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onSelectFleetCategor
             <div className="pt-1 flex items-center gap-2 text-xs text-slate-950 font-black">
               <ShieldCheck className="w-4 h-4 text-slate-950 shrink-0" />
               <span>Unidades 100% aseguradas con GPS y sanitización</span>
+            </div>
+
+            {/* Social Media Links */}
+            <div className="pt-2 border-t border-amber-500/40 space-y-2">
+              <span className="text-xs font-black uppercase text-slate-950 block">
+                Redes Sociales Oficiales:
+              </span>
+              <SocialLinks variant="footer" />
             </div>
           </div>
 
@@ -159,6 +168,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onSelectFleetCategor
             © {new Date().getFullYear()} <span className="text-amber-400 font-black">{COMPANY_NAME} BY BERAKAH</span>. Todos los derechos reservados.
           </div>
           <div className="flex items-center gap-4 flex-wrap justify-center">
+            <SocialLinks variant="header" />
+
             <div className="flex items-center gap-1.5 bg-neutral-900 px-2.5 py-1 rounded-lg border border-neutral-800">
               <VisaLogo className="h-4 w-auto" />
               <MastercardLogo className="h-4 w-auto" />

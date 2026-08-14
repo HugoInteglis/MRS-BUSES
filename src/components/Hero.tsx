@@ -9,7 +9,7 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   // Capacity preset selector state
-  const [selectedCapacityId, setSelectedCapacityId] = useState<string>('bus-escolar');
+  const [selectedCapacityId, setSelectedCapacityId] = useState<string>('buses-escolares');
 
   const selectedVehicle: FleetItem =
     FLEET_LIST.find((v) => v.id === selectedCapacityId) || FLEET_LIST[0];
@@ -66,7 +66,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                   { id: 'microbus-estandar', label: '7 a 15 Pax', type: 'Microbús' },
                   { id: 'county-coaster', label: '24 a 28 Pax', type: 'Coaster' },
                   { id: 'mini-pullman', label: '33 Pax', type: 'Mini Pullman' },
-                  { id: 'bus-escolar', label: '44 a 48 Pax', type: 'Bus Escolar' },
+                  { id: 'buses-escolares', label: '44 a 48 Pax', type: 'Bus Escolar' },
                 ].map((item) => {
                   const isSelected = selectedCapacityId === item.id;
                   return (
