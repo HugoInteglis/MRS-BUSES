@@ -60,7 +60,7 @@ export const SERVICES_LIST: ServiceItem[] = [
       'Proporcionamos servicio de alquiler de bus escolar para colegios e instituciones, garantizando traslados seguros, cómodos y puntuales. Contamos con unidades equipadas y conductores responsables para asegurar que los estudiantes viajen con confianza y lleguen siempre a tiempo.',
     iconName: 'GraduationCap',
     imageUrl:
-      'https://i.ibb.co/DHjHvDT1/Whats-App-Image-2026-08-12-at-16-10-12.jpg',
+      'https://i.ibb.co/HDnKy5Qk/Whats-App-Image-2026-08-12-at-16-10-12.jpg',
     features: [
       'Unidades amarillas reglamentarias y certificadas',
       'Cinturones de seguridad en todos los asientos',
@@ -208,12 +208,12 @@ export const FLEET_LIST: FleetItem[] = [
         'Los costos de peajes, entradas a parques, o cualquier gasto ajeno a la operación de la ruta estándar no están incluidos en la tarifa base y se gestionan por separado, a menos que se especifique lo contrario en el contrato.',
     },
     imageUrl:
-      'https://i.ibb.co/DHjHvDT1/Whats-App-Image-2026-08-12-at-16-10-12.jpg',
+      'https://i.ibb.co/HDnKy5Qk/Whats-App-Image-2026-08-12-at-16-10-12.jpg',
     galleryUrls: [
-      'https://i.ibb.co/DHjHvDT1/Whats-App-Image-2026-08-12-at-16-10-12.jpg',
-      'https://i.ibb.co/LD7zmb2s/Whats-App-Image-2026-08-12-at-16-10-25-1.jpg',
-      'https://i.ibb.co/tTsgKNQM/Whats-App-Image-2026-08-12-at-16-10-25-2.jpg',
-      'https://i.ibb.co/nNr7C990/Whats-App-Image-2026-08-12-at-16-10-25.jpg',
+      'https://i.ibb.co/HDnKy5Qk/Whats-App-Image-2026-08-12-at-16-10-12.jpg',
+      'https://i.ibb.co/SX9PrKqY/Whats-App-Image-2026-08-12-at-16-10-25-1.jpg',
+      'https://i.ibb.co/hxQsWYhy/Whats-App-Image-2026-08-12-at-16-10-25-2.jpg',
+      'https://i.ibb.co/LDxFWH6t/Whats-App-Image-2026-08-12-at-16-10-25.jpg',
     ],
     amenities: [
       'Capacidad 44-48 pax',
