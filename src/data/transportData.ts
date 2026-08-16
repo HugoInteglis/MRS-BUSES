@@ -393,10 +393,12 @@ export const FLEET_LIST: FleetItem[] = [
         'Los costos de peajes, entradas a parques o cualquier gasto ajeno a la operación de la ruta diaria estándar no están incluidos en la tarifa base y se gestionan por separado, a menos que se especifique lo contrario en el contrato.',
     },
     imageUrl:
-      'https://i.ibb.co/1Y49XkH9/PHOTO-2024-08-05-17-49-07.jpg',
+      'https://i.ibb.co/8LXg9PFG/Whats-App-Image-2026-08-12-at-16-11-04.jpg',
     galleryUrls: [
-      'https://i.ibb.co/1Y49XkH9/PHOTO-2024-08-05-17-49-07.jpg',
-      'https://i.ibb.co/G3tC5cms/PHOTO-2024-08-05-17-49-07-2.jpg',
+      'https://i.ibb.co/8LXg9PFG/Whats-App-Image-2026-08-12-at-16-11-04.jpg',
+      'https://i.ibb.co/hJY5CRdq/Whats-App-Image-2026-08-12-at-16-11-03.jpg',
+      'https://i.ibb.co/R46Ptg1R/Whats-App-Image-2026-08-12-at-16-11-03-2.jpg',
+      'https://i.ibb.co/x8fMzTXZ/Whats-App-Image-2026-08-12-at-16-11-03-1.jpg',
     ],
     amenities: [
       'Capacidad 24 a 28 pasajeros',
